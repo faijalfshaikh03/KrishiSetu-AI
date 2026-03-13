@@ -1,4 +1,4 @@
-import { TrendingUp, Lightbulb, CloudSun, Plus } from 'lucide-react'
+import { TrendingUp, Lightbulb, CloudSun, AlertTriangle, Plus } from 'lucide-react'
 import { useLanguage } from '../context/LanguageContext'
 import { useThemeClasses } from '../hooks/useThemeClasses'
 
@@ -27,6 +27,13 @@ const Dashboard = () => {
       description: t('dashboard.weatherAdviceDesc'),
       color: 'bg-orange-500',
       link: '/weather-advice'
+    },
+    {
+      icon: AlertTriangle,
+      title: 'Disease Detection',
+      description: 'Identify crop diseases early and get treatment recommendations',
+      color: 'bg-red-500',
+      link: '/disease-detection'
     }
   ]
 
@@ -39,7 +46,7 @@ const Dashboard = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => {
           const Icon = card.icon
           return (
