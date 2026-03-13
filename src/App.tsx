@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard'
 import PricePrediction from './pages/PricePrediction'
 import CropRecommendation from './pages/CropRecommendation'
 import WeatherAdvice from './pages/WeatherAdvice'
+import DiseaseDetection from './pages/DiseaseDetection'
 import Community from './pages/Community'
 import CommunityDetail from './pages/CommunityDetail'
 import Orders from './pages/Orders'
@@ -46,6 +47,7 @@ function AppContent() {
                       <Route path="/price-prediction" element={<PricePrediction />} />
                       <Route path="/crop-recommendation" element={<CropRecommendation />} />
                       <Route path="/weather-advice" element={<WeatherAdvice />} />
+                      <Route path="/disease-detection" element={<DiseaseDetection />} />
                       <Route path="/marketplace" element={<Marketplace />} />
                       <Route path="/produce-listings" element={<ProduceListings />} />
                       <Route path="/community" element={<Community />} />

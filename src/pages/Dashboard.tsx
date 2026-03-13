@@ -1,4 +1,5 @@
-import { TrendingUp, Lightbulb, CloudSun, Plus } from 'lucide-react'
+import { TrendingUp, Lightbulb, CloudSun, AlertTriangle, Plus } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useThemeClasses } from '../hooks/useThemeClasses'
 
@@ -27,6 +28,13 @@ const Dashboard = () => {
       description: t('dashboard.weatherAdviceDesc'),
       color: 'bg-orange-500',
       link: '/weather-advice'
+    },
+    {
+      icon: AlertTriangle,
+      title: 'Disease Detection',
+      description: 'Identify crop diseases early and get treatment recommendations',
+      color: 'bg-red-500',
+      link: '/disease-detection'
     }
   ]
 
@@ -39,20 +47,21 @@ const Dashboard = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => {
           const Icon = card.icon
           return (
-            <div
+            <Link
               key={card.title}
-              className={`${themeClasses.card} rounded-xl p-6 ${themeClasses.border} border hover:border-green-500 transition-all cursor-pointer`}
+              to={card.link}
+              className={`${themeClasses.card} rounded-xl p-6 ${themeClasses.border} border hover:border-green-500 transition-all cursor-pointer block`}
             >
               <div className={`w-12 h-12 ${card.color} rounded-lg flex items-center justify-center mb-4`}>
                 <Icon className="text-white" size={24} />
               </div>
               <h3 className={`text-xl font-bold mb-2 ${themeClasses.text.primary}`}>{card.title}</h3>
               <p className={`${themeClasses.text.secondary} text-sm`}>{card.description}</p>
-            </div>
+            </Link>
           )
         })}
       </div>
