@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useLanguage } from '../context/LanguageContext'
+import { useThemeClasses } from '../hooks/useThemeClasses'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -8,6 +10,8 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { signIn } = useAuth()
+  const { t } = useLanguage()
+  const themeClasses = useThemeClasses()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,14 +30,14 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-dark-bg px-4">
-      <div className="max-w-md w-full space-y-8 bg-dark-card p-8 rounded-lg shadow-lg">
+    <div className={`min-h-screen flex items-center justify-center ${themeClasses.bg} px-4`}>
+      <div className={`max-w-md w-full space-y-8 ${themeClasses.card} p-8 rounded-lg shadow-lg ${themeClasses.border} border`}>
         <div>
-          <h2 className="text-3xl font-bold text-center text-white">
-            Welcome Back
+          <h2 className={`text-3xl font-bold text-center ${themeClasses.text.primary}`}>
+            {t('auth.welcomeBack')}
           </h2>
-          <p className="mt-2 text-center text-gray-400">
-            Sign in to your account
+          <p className={`mt-2 text-center ${themeClasses.text.secondary}`}>
+            {t('auth.signInToAccount')}
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -44,8 +48,8 @@ export default function Login() {
           )}
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-                Email address
+              <label htmlFor="email" className={`block text-sm font-medium ${themeClasses.text.secondary}`}>
+                {t('auth.email')}
               </label>
               <input
                 id="email"
@@ -54,13 +58,13 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-dark-bg border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="Enter your email"
+                className={`mt-1 block w-full px-3 py-2 rounded-md ${themeClasses.input} focus:outline-none focus:ring-2`}
+                placeholder={t('auth.enterEmail')}
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-                Password
+              <label htmlFor="password" className={`block text-sm font-medium ${themeClasses.text.secondary}`}>
+                {t('auth.password')}
               </label>
               <input
                 id="password"
@@ -69,8 +73,8 @@ export default function Login() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-dark-bg border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="Enter your password"
+                className={`mt-1 block w-full px-3 py-2 rounded-md ${themeClasses.input} focus:outline-none focus:ring-2`}
+                placeholder={t('auth.enterPassword')}
               />
             </div>
           </div>
@@ -78,16 +82,16 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${themeClasses.button.primary} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed`}
           >
-            {loading ? 'Signing in...' : 'Sign in'}
+            {loading ? t('auth.signingIn') : t('auth.login')}
           </button>
 
           <div className="text-center">
-            <p className="text-sm text-gray-400">
-              Don't have an account?{' '}
+            <p className={`text-sm ${themeClasses.text.secondary}`}>
+              {t('auth.dontHaveAccount')}{' '}
               <Link to="/signup" className="text-primary hover:text-primary/90">
-                Sign up
+                {t('auth.signup')}
               </Link>
             </p>
           </div>

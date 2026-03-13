@@ -1,25 +1,30 @@
 import { TrendingUp, Lightbulb, CloudSun, Plus } from 'lucide-react'
+import { useLanguage } from '../context/LanguageContext'
+import { useThemeClasses } from '../hooks/useThemeClasses'
 
 const Dashboard = () => {
+  const { t } = useLanguage()
+  const themeClasses = useThemeClasses()
+  
   const cards = [
     {
       icon: TrendingUp,
-      title: 'Crop Price Prediction',
-      description: 'Predict crop prices based on market trends',
+      title: t('dashboard.cropPricePrediction'),
+      description: t('dashboard.cropPricePredictionDesc'),
       color: 'bg-blue-500',
       link: '/price-prediction'
     },
     {
       icon: Lightbulb,
-      title: 'Crop Recommendation',
-      description: 'Get AI-powered crop recommendations',
+      title: t('dashboard.cropRecommendation'),
+      description: t('dashboard.cropRecommendationDesc'),
       color: 'bg-green-500',
       link: '/crop-recommendation'
     },
     {
       icon: CloudSun,
-      title: 'Weather & Farming Advice',
-      description: 'Real-time weather and farming tips',
+      title: t('dashboard.weatherAdvice'),
+      description: t('dashboard.weatherAdviceDesc'),
       color: 'bg-orange-500',
       link: '/weather-advice'
     }
@@ -28,9 +33,9 @@ const Dashboard = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
-        <p className="text-gray-400">
-          Welcome to KrishiSetu AI. Choose a tool to get started.
+        <h1 className={`text-4xl font-bold mb-2 ${themeClasses.text.primary}`}>{t('dashboard.title')}</h1>
+        <p className={themeClasses.text.secondary}>
+          {t('dashboard.welcome')}
         </p>
       </div>
 
@@ -40,13 +45,13 @@ const Dashboard = () => {
           return (
             <div
               key={card.title}
-              className="bg-dark-card rounded-xl p-6 border border-dark-border hover:border-green-500 transition-all cursor-pointer"
+              className={`${themeClasses.card} rounded-xl p-6 ${themeClasses.border} border hover:border-green-500 transition-all cursor-pointer`}
             >
               <div className={`w-12 h-12 ${card.color} rounded-lg flex items-center justify-center mb-4`}>
                 <Icon className="text-white" size={24} />
               </div>
-              <h3 className="text-xl font-bold mb-2">{card.title}</h3>
-              <p className="text-gray-400 text-sm">{card.description}</p>
+              <h3 className={`text-xl font-bold mb-2 ${themeClasses.text.primary}`}>{card.title}</h3>
+              <p className={`${themeClasses.text.secondary} text-sm`}>{card.description}</p>
             </div>
           )
         })}

@@ -1,7 +1,9 @@
-import { Plus, User, MapPin, Copy, Edit2 } from 'lucide-react'
+import { Plus, User, MapPin, Copy, Edit2, Globe } from 'lucide-react'
 import { useState } from 'react'
+import { useLanguage } from '../context/LanguageContext'
 
 const Settings = () => {
+  const { language, setLanguage, t } = useLanguage()
   const [activeTab, setActiveTab] = useState('profile')
   const [username, setUsername] = useState('your_username')
   const [displayName, setDisplayName] = useState('Your Name')
@@ -10,11 +12,17 @@ const Settings = () => {
   const [email] = useState('user@example.com')
 
   const tabs = [
-    { id: 'profile', label: 'Profile' },
-    { id: 'appearance', label: 'Appearance' },
-    { id: 'notifications', label: 'Notifications' },
-    { id: 'translation', label: 'Translation' },
-    { id: 'my-orders', label: 'My Orders' }
+    { id: 'profile', label: t('settings.profile') },
+    { id: 'appearance', label: t('settings.appearance') },
+    { id: 'notifications', label: t('settings.notifications') },
+    { id: 'translation', label: t('settings.translation') },
+    { id: 'my-orders', label: t('settings.myOrders') }
+  ]
+
+  const languages = [
+    { code: 'en', name: t('language.english'), flag: '🇺🇸' },
+    { code: 'hi', name: t('language.hindi'), flag: '🇮🇳' },
+    { code: 'mr', name: t('language.marathi'), flag: '🇮🇳' }
   ]
 
   const handleUpdateProfile = () => {
@@ -31,9 +39,9 @@ const Settings = () => {
     <div>
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Settings</h1>
+        <h1 className="text-4xl font-bold mb-2">{t('settings.title')}</h1>
         <p className="text-gray-400">
-          Manage your account settings, profile, and preferences.
+          {t('settings.subtitle')}
         </p>
       </div>
 
@@ -127,7 +135,7 @@ const Settings = () => {
                   onClick={handleUpdateProfile}
                   className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
                 >
-                  Update profile
+                  {t('settings.updateProfile')}
                 </button>
               </div>
 
@@ -191,9 +199,39 @@ const Settings = () => {
 
           {activeTab === 'translation' && (
             <div className="bg-dark-card rounded-xl p-6 border border-dark-border">
-              <h2 className="text-2xl font-bold mb-2">Translation</h2>
-              <p className="text-gray-400">Choose your preferred language.</p>
-              <div className="mt-6 text-gray-500">Translation settings coming soon...</div>
+              <div className="flex items-center gap-3 mb-4">
+                <Globe className="text-green-500" size={24} />
+                <h2 className="text-2xl font-bold">{t('settings.translation')}</h2>
+              </div>
+              <p className="text-gray-400 mb-6">{t('settings.chooseLanguage')}</p>
+              
+              <div className="space-y-3">
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => setLanguage(lang.code as any)}
+                    className={`w-full flex items-center justify-between p-4 rounded-lg border transition-all ${
+                      language === lang.code
+                        ? 'border-green-500 bg-green-500/10 text-green-400'
+                        : 'border-dark-border bg-dark-bg hover:border-gray-600 text-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{lang.flag}</span>
+                      <span className="font-medium">{lang.name}</span>
+                    </div>
+                    {language === lang.code && (
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <p className="text-blue-400 text-sm">
+                  <strong>Note:</strong> Language changes will be applied immediately. Some content may require a page refresh to fully update.
+                </p>
+              </div>
             </div>
           )}
 
