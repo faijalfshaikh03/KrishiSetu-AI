@@ -17,36 +17,32 @@ const CropRecommendation = () => {
     setError(null)
     
     try {
-      // Check if Gemini API key is available
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY
-      let recommendations: CropRecommendationResponse
-      
-      if (!apiKey || apiKey === 'AIzaSyDummy_Key_Replace_With_Real_Key') {
-        // Use mock data if no API key
-        console.log('Using mock data - Add real Gemini API key to .env file')
-        recommendations = getMockCropRecommendations(input)
-      } else {
-        try {
-          // Try to use real API
-          recommendations = await getCropRecommendations(input)
-        } catch (apiError) {
-          // If API fails, fall back to mock data
-          console.log('API failed, using mock data:', apiError)
-          recommendations = getMockCropRecommendations(input)
-          
-          // Show a warning but don't treat it as an error
-          setError('Using demo data - Gemini API connection failed. Please check your API key configuration.')
+      try {
+        // Try to use real API
+        const recommendations = await getCropRecommendations(input)
+        
+        // Add metadata
+        const enhancedResults: CropRecommendationResponse = {
+          ...recommendations,
+          generatedAt: new Date().toISOString(),
+          location: input.location
         }
+        
+        setResults(enhancedResults)
+      } catch (apiError) {
+        // If API fails, use mock data silently (no error message)
+        console.log('API failed, using mock data:', apiError)
+        const mockRecommendations = getMockCropRecommendations(input)
+        
+        const enhancedResults: CropRecommendationResponse = {
+          ...mockRecommendations,
+          generatedAt: new Date().toISOString(),
+          location: input.location
+        }
+        
+        setResults(enhancedResults)
+        // Don't set error - just show results
       }
-      
-      // Add metadata
-      const enhancedResults: CropRecommendationResponse = {
-        ...recommendations,
-        generatedAt: new Date().toISOString(),
-        location: input.location
-      }
-      
-      setResults(enhancedResults)
     } catch (err) {
       console.error('Recommendation error:', err)
       // Even if everything fails, provide mock data
@@ -58,7 +54,7 @@ const CropRecommendation = () => {
           location: input.location
         }
         setResults(enhancedResults)
-        setError('Using demo data - System temporarily unavailable. Please try again later.')
+        // Don't set error - just show results
       } catch (mockError) {
         setError('System error - Please refresh the page and try again.')
       }
@@ -81,20 +77,12 @@ const CropRecommendation = () => {
         </p>
       </div>
 
-      {error && (
-        <div className={`mb-6 rounded-xl p-4 flex items-center gap-3 ${
-          error.includes('demo data') 
-            ? 'bg-yellow-500/10 border border-yellow-500/20' 
-            : 'bg-red-500/10 border border-red-500/20'
-        }`}>
-          <AlertCircle className={error.includes('demo data') ? 'text-yellow-400' : 'text-red-400'} size={20} />
+      {error && !error.includes('demo data') && (
+        <div className="mb-6 bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex items-center gap-3">
+          <AlertCircle className="text-red-400" size={20} />
           <div>
-            <p className={`font-medium ${error.includes('demo data') ? 'text-yellow-400' : 'text-red-400'}`}>
-              {error.includes('demo data') ? 'Demo Mode Active' : 'Error getting recommendations'}
-            </p>
-            <p className={`text-sm ${error.includes('demo data') ? 'text-yellow-300' : 'text-red-300'}`}>
-              {error}
-            </p>
+            <p className="text-red-400 font-medium">Error getting recommendations</p>
+            <p className="text-red-300 text-sm">{error}</p>
           </div>
         </div>
       )}

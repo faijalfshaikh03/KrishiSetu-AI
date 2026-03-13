@@ -105,8 +105,19 @@ const CropRecommendationForm = ({ onSubmit, loading }: CropRecommendationFormPro
     }
 
     const submissionData: CropRecommendationInput = {
-      location: location as LocationData,
-      farmData
+      location: {
+        latitude: location.latitude || 0,
+        longitude: location.longitude || 0,
+        region: location.district,
+        state: location.state
+      },
+      soilType: farmData.soilType,
+      season: farmData.season,
+      farmSize: farmData.farmSize,
+      previousCrops: farmData.previousCrops,
+      budget: farmData.budget,
+      waterAvailability: farmData.waterAvailability,
+      farmingExperience: farmData.farmingExperience
     }
 
     onSubmit(submissionData)

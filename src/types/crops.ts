@@ -26,7 +26,13 @@ export interface WeatherData {
 
 export interface CropRecommendationInput {
   location: LocationData
-  farmData?: Partial<FarmData>
+  soilType?: string
+  season?: string
+  farmSize?: number
+  previousCrops?: string[]
+  budget?: number
+  waterAvailability?: string
+  farmingExperience?: string
   weatherData?: WeatherData
 }
 
