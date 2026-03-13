@@ -1,4 +1,5 @@
 import { TrendingUp, Lightbulb, CloudSun, AlertTriangle, Plus } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { useThemeClasses } from '../hooks/useThemeClasses'
 
@@ -50,16 +51,17 @@ const Dashboard = () => {
         {cards.map((card) => {
           const Icon = card.icon
           return (
-            <div
+            <Link
               key={card.title}
-              className={`${themeClasses.card} rounded-xl p-6 ${themeClasses.border} border hover:border-green-500 transition-all cursor-pointer`}
+              to={card.link}
+              className={`${themeClasses.card} rounded-xl p-6 ${themeClasses.border} border hover:border-green-500 transition-all cursor-pointer block`}
             >
               <div className={`w-12 h-12 ${card.color} rounded-lg flex items-center justify-center mb-4`}>
                 <Icon className="text-white" size={24} />
               </div>
               <h3 className={`text-xl font-bold mb-2 ${themeClasses.text.primary}`}>{card.title}</h3>
               <p className={`${themeClasses.text.secondary} text-sm`}>{card.description}</p>
-            </div>
+            </Link>
           )
         })}
       </div>
